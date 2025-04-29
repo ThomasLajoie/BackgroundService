@@ -26,7 +26,7 @@ export class AppComponent {
   baseUrl = "https://localhost:7056/";
 
   // Ajouter une variable nbWins
-
+  nbWins = 0;
   private hubConnection?: signalR.HubConnection
 
   isConnected = false;
@@ -87,6 +87,7 @@ export class AppComponent {
     this.hubConnection.on('GameInfo', (data:GameInfo) => {
       this.isConnected = true;
       // TODO: Mettre à jour les variables pour le coût du multiplier et le nbWins
+      this.nbWins = data.nbWins
     });
 
     this.hubConnection.on('EndRound', (data:RoundResult) => {
@@ -100,7 +101,11 @@ export class AppComponent {
         if(data.winners.length > 1)
           phrase = " ont gagnées avec "
         alert(data.winners.join(", ") + phrase + data.nbClicks + " clicks!");
+        if(data.winners.includes(this.account.username)){
+          this.nbWins ++
+        }
       }
+
       else{
         alert("Aucun gagnant...");
       }

@@ -72,6 +72,7 @@ namespace BackgroundService.Services
                 }
             }
 
+
             // Reset
             foreach (var key in _data.Keys)
             {
@@ -99,6 +100,13 @@ namespace BackgroundService.Services
                 // TODO: Mettre à jour et sauvegarder le nbWinds des joueurs
 
                 List<IdentityUser> users = await backgroundServiceContext.Users.Where(u => winners.Contains(u.Id)).ToListAsync();
+
+                List<Player> players = await backgroundServiceContext.Player.Where(u => winners.Contains(u.UserId)).ToListAsync();
+
+                foreach (var player in players)
+                {
+                    player.nbWins += 1;
+                }
 
                 RoundResult roundResult = new RoundResult()
                 {
