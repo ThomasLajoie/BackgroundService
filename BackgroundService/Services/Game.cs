@@ -99,14 +99,15 @@ namespace BackgroundService.Services
 
                 // TODO: Mettre à jour et sauvegarder le nbWinds des joueurs
 
-                List<IdentityUser> users = await backgroundServiceContext.Users.Where(u => winners.Contains(u.Id)).ToListAsync();
-
-                List<Player> players = await backgroundServiceContext.Player.Where(u => winners.Contains(u.UserId)).ToListAsync();
+                List<Player> players = await backgroundServiceContext.Player.Where(p => winners.Contains(p.UserId)).ToListAsync();
 
                 foreach (var player in players)
                 {
-                    player.nbWins += 1;
+                    player.NbWins ++;
                 }
+                await backgroundServiceContext.SaveChangesAsync();
+
+                List<IdentityUser> users = await backgroundServiceContext.Users.Where(u => winners.Contains(u.Id)).ToListAsync();
 
                 RoundResult roundResult = new RoundResult()
                 {

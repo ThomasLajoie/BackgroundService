@@ -87,6 +87,8 @@ export class AppComponent {
     this.hubConnection.on('GameInfo', (data:GameInfo) => {
       this.isConnected = true;
       // TODO: Mettre à jour les variables pour le coût du multiplier et le nbWins
+      //this.nbWins = data.nbWins
+
       this.nbWins = data.nbWins
     });
 
@@ -95,20 +97,20 @@ export class AppComponent {
       // TODO: Reset du multiplierCost et le multiplier
 
       // TODO: Si le joueur a gagné, on augmene nbWins
+      if(data.winners.indexOf(this.account.username) >= 0)
+        this.nbWins++;
 
       if(data.nbClicks > 0){
         let phrase = " a gagné avec ";
         if(data.winners.length > 1)
           phrase = " ont gagnées avec "
         alert(data.winners.join(", ") + phrase + data.nbClicks + " clicks!");
-        if(data.winners.includes(this.account.username)){
-          this.nbWins ++
-        }
       }
 
       else{
         alert("Aucun gagnant...");
       }
+
     });
 
     this.hubConnection
